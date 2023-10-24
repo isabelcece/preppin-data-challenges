@@ -45,10 +45,10 @@ prices_converted AS (
 SELECT *,
 MONTHNAME(DATE_FROM_PARTS(2000,file_name,1)) AS file_date,
 CASE
-WHEN CONTAINS(market_cap, 'M') THEN TO_DECIMAL(REPLACE(REPLACE(market_cap, '$'),'M'),38,2) * 1000000
-WHEN CONTAINS(market_cap, 'B') THEN TO_DECIMAL(REPLACE(REPLACE(market_cap, '$'),'B'),38,2) * 1000000000
+WHEN CONTAINS(market_cap, 'M') THEN REPLACE(REPLACE(market_cap, '$'),'M')::float * 1000000
+WHEN CONTAINS(market_cap, 'B') THEN REPLACE(REPLACE(market_cap, '$'),'B')::float * 1000000000
 END AS market_cap_cleaned,
-TO_DECIMAL(REPLACE(purchase_price,'$'),38,2) AS purchase_price_cleaned
+REPLACE(purchase_price,'$')::float AS purchase_price_cleaned
 FROM unioned_files
 WHERE market_cap != 'n/a'
 ),
